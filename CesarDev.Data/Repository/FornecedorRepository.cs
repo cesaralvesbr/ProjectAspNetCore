@@ -14,6 +14,7 @@ namespace CesarDev.Data.Repository
     {
         public FornecedorRepository(DevDbContext context) : base(context) { }
 
+        //Obtem o Fornecedor e seu Endereço
         public async Task<Fornecedor> ObterFornecedorEndereco(Guid id)
         {
             return await Db.Fornecedores.AsNoTracking()
@@ -21,6 +22,7 @@ namespace CesarDev.Data.Repository
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
+        //Obtem o Fornecedor seus Produtos e seu Endereço
         public async Task<Fornecedor> ObterFornecedorProdutosEndereco(Guid id)
         {
             return await Db.Fornecedores.AsNoTracking()
