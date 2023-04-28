@@ -29,7 +29,7 @@ namespace CesarDev.App.Controllers
             if (fornecedorViewModel == null)
                 return NotFound();
 
-            return View();
+            return View(fornecedorViewModel);
         }
 
         public ActionResult Create()
@@ -37,8 +37,7 @@ namespace CesarDev.App.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost]        
         public async Task<IActionResult> Create(FornecedorViewModel fornecedorViewModel)
         {
             if (!ModelState.IsValid)

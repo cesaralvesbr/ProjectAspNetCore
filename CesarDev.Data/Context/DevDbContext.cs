@@ -27,21 +27,7 @@ namespace CesarDev.Data.Context
 
             base.OnModelCreating(modelBuilder);
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer(@"Server=(localdb)\\mssqllocaldb;Database=MinhaAppMvcCoreCesar;Trusted_Connection=True;MultipleActiveResultSets=true");
-        //}
-        //public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<DevDbContext>
-        //{
-        //    public DevDbContext CreateDbContext(string[] args)
-        //    {
-        //        var optionsBuilder = new DbContextOptionsBuilder<DevDbContext>();
-        //        //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EcommerceDb;Trusted_Connection=True;MultipleActiveResultSets=true");
-        //        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MinhaAppMvcCoreCesar;Trusted_Connection=True;MultipleActiveResultSets=true");
-
-        //        return new DevDbContext(optionsBuilder.Options);
-        //    }
-        //}
+ 
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Fornecedor> Fornecedores { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }

@@ -43,9 +43,10 @@ namespace CesarDev.Data.Repository
             await SaveChanges();
         }
 
-        public virtual async Task Atualizar(TEntity obj)
+        public virtual async Task Atualizar(TEntity entity)
         {
-            DbSet.Update(obj);
+            Db.Entry(entity).State = EntityState.Modified;
+            DbSet.Update(entity);
             await SaveChanges();
         }
 
