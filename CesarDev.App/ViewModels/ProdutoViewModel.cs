@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using CesarDev.App.Extensios;
+using CesarDev.App.Extensions;
 
 namespace CesarDev.App.ViewModels
 {

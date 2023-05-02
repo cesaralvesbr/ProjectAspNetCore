@@ -2,6 +2,7 @@
 using CesarDev.App.ViewModels;
 using CesarDev.Business.Interfaces;
 using CesarDev.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CesarDev.App.Controllers
@@ -22,12 +23,15 @@ namespace CesarDev.App.Controllers
             _mapper = mapper;
         }
 
-
+        [AllowAnonymous]
+        [Route("lista-de-produtos")]
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<ProdutoViewModel>>(await ObterProdutosFornecedores()));
         }
 
+        [AllowAnonymous]
+        [Route("dados-do-produto/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
             var produtoViewModel = await ObterProduto(id);
@@ -38,14 +42,17 @@ namespace CesarDev.App.Controllers
             return View(produtoViewModel);
         }
 
+        //[ClaimsAuthorize("Produto","Adicionar")]
+        [Route("novo-produto")]
         public async Task<IActionResult> Create()
         {
             ProdutoViewModel produtoViewModel = await PopularFornecedores(new ProdutoViewModel());
             return View(produtoViewModel);
         }
 
+        //[ClaimsAuthorize("Produto", "Adicionar")]
+        [Route("novo-produto")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProdutoViewModel produtoViewModel)
         {
             produtoViewModel = await PopularFornecedores(produtoViewModel);
@@ -64,7 +71,8 @@ namespace CesarDev.App.Controllers
             return RedirectToAction("Index");
         }
 
-        [Route("{id:guid}")]
+        //[ClaimsAuthorize("Produto", "Editar")]
+        [Route("editar-produto/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             ProdutoViewModel produtoViewModel = await ObterProduto(id);
@@ -75,9 +83,9 @@ namespace CesarDev.App.Controllers
             return View(produtoViewModel);
         }
 
-        [Route("{id:guid}")]
+        //[ClaimsAuthorize("Produto", "Editar")]
+        [Route("editar-produto/{id:guid}")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ProdutoViewModel produtoViewModel)
         {
             if (id != produtoViewModel.Id) return NotFound();
@@ -109,17 +117,21 @@ namespace CesarDev.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //[ClaimsAuthorize("Produto", "Excluir")]
+        [Route("excluir-produto/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            Task<ProdutoViewModel> produtoViewModel = ObterProduto(id);
+            ProdutoViewModel produtoViewModel = await ObterProduto(id);
+
             if (produtoViewModel == null)
                 return NotFound();
 
             return View(produtoViewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ClaimsAuthorize("Produto", "Excluir")]
+        [Route("excluir-produto/{id:guid}")]
+        [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             ProdutoViewModel produtoViewModel = await ObterProduto(id);

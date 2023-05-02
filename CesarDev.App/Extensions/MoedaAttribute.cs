@@ -4,7 +4,7 @@ using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
-namespace CesarDev.App.Extensios
+namespace CesarDev.App.Extensions
 {
     public class MoedaAttribute : ValidationAttribute
     {

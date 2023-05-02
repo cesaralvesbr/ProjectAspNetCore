@@ -1,5 +1,5 @@
 using CesarDev.App.Configurarions;
-using CesarDev.App.Extensios;
+using CesarDev.App.Extensions;
 using CesarDev.Business.Interfaces;
 using CesarDev.Data.Context;
 using CesarDev.Data.Repository;
@@ -7,6 +7,12 @@ using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", true, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -20,12 +26,7 @@ builder.Services.AddDbContext<DevDbContext>(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddMvcConfiguration();
 
-
-builder.Services.AddScoped<DevDbContext>();
-builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
-builder.Services.AddScoped<IFornecedorRepository, FornecedorRepository>();
-builder.Services.AddScoped<IEnderecoRepositoy, EnderecoRepository>();
-builder.Services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
+builder.Services.ResolveDependencias();
 
 var app = builder.Build();
 
