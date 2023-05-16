@@ -1,4 +1,4 @@
-﻿using CesarDev.Business.Interfaces;
+﻿using CesarDev.Business.Interfaces.Repository;
 using CesarDev.Business.Models;
 using CesarDev.Data.Context;
 using Microsoft.EntityFrameworkCore;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CesarDev.Business.Interfaces
+namespace CesarDev.Business.Interfaces.Repository
 {
     public interface IFornecedorRepository : IRepository<Fornecedor>
     {

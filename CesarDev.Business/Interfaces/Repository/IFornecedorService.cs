@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CesarDev.Business.Interfaces
+namespace CesarDev.Business.Interfaces.Repository
 {
-    public interface IFornecedorService
+    public interface IFornecedorService : IDisposable
     {
         Task Adicionar(Fornecedor fornecedor);
         Task Atualizar(Fornecedor fornecedor);
-        Task Remover(Fornecedor fornecedor);
-        Task AtualizarEndereco(Fornecedor fornecedor);
+        Task Remover(Guid id);
+        Task AtualizarEndereco(Endereco endereco);
 
     }
 }

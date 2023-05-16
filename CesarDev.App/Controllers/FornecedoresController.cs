@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CesarDev.App.ViewModels;
-using CesarDev.Business.Interfaces;
+using CesarDev.Business.Interfaces.Repository;
 using CesarDev.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

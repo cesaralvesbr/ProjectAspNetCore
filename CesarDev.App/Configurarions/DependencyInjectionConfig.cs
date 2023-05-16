@@ -1,5 +1,8 @@
 ﻿using CesarDev.App.Extensions;
-using CesarDev.Business.Interfaces;
+using CesarDev.Business.Interfaces.Repository;
+using CesarDev.Business.Interfaces.Services;
+using CesarDev.Business.Notificacoes;
+using CesarDev.Business.Services;
 using CesarDev.Data.Context;
 using CesarDev.Data.Repository;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -15,6 +18,11 @@ namespace CesarDev.App.Configurarions
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IEnderecoRepositoy, EnderecoRepository>();
             services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
+
+            services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<IFornecedorService, FornecedorService>();
+            services.AddScoped<IProdutoService, ProdutoService>();
+
 
             return services;
         }

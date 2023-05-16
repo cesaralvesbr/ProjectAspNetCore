@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CesarDev.Business.Interfaces
+namespace CesarDev.Business.Interfaces.Services
 {
-    public interface IProdutoService
+    public interface IProdutoService : IDisposable
     {
         Task Adicionar(Produto produto);
         Task Atualizar(Produto produto);
-        Task Remover(Produto produto);
-       
+        Task Remover(Guid Id);
+
     }
 }

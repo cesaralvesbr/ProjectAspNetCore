@@ -1,4 +1,4 @@
-﻿using CesarDev.Business.Interfaces;
+﻿using CesarDev.Business.Interfaces.Repository;
 using CesarDev.Business.Models;
 using CesarDev.Business.Models.Validations;
 
@@ -6,14 +6,13 @@ namespace CesarDev.Business.Services
 {
     public abstract class FornecedorService : BaseService, IFornecedorService
     {
-        private readonly IFornecedorRepository _fornecedorRepository;
-        private readonly IProdutoRepository _produtoRepository;
+        private readonly IFornecedorRepository _fornecedorRepository;        
+        private readonly IEnderecoRepositoy _enderecoRepositoy;
 
-        protected FornecedorService(IFornecedorRepository fornecedorRepository,
-            IProdutoRepository produtoRepository)
+        protected FornecedorService(IFornecedorRepository fornecedorRepository,  IEnderecoRepositoy enderecoRepositoy)
         {
-            _fornecedorRepository = fornecedorRepository;
-            _produtoRepository = produtoRepository;
+            _fornecedorRepository = fornecedorRepository;            
+            _enderecoRepositoy = enderecoRepositoy;
         }
 
         public async Task Adicionar(Fornecedor fornecedor)
@@ -34,22 +33,37 @@ namespace CesarDev.Business.Services
         {
             if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) ;
 
-            if (_fornecedorRepository.Buscar(f=>f.Documento == fornecedor.Documento && f.Id != fornecedor.Id).Result.Any())
+            if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento && f.Id != fornecedor.Id).Result.Any())
             {
                 Notificar("Já existe fornecedor com esse documento informado.");
                 return;
             }
+
+            await _fornecedorRepository.Atualizar(fornecedor);
         }
 
-        public async Task AtualizarEndereco(Fornecedor fornecedor)
+        public async Task AtualizarEndereco(Endereco endereco)
         {
-            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) ;
+            if (!ExecutarValidacao(new EnderecoValidation(), endereco)) ;
 
+            await _enderecoRepositoy.Atualizar(endereco);
         }
 
-        public async Task Remover(Fornecedor fornecedor)
+        public async Task Remover(Guid id)
         {
-            throw new NotImplementedException();
+            if (_fornecedorRepository.ObterFornecedorProdutosEndereco(id).Result.Produtos.Any())
+            {
+                Notificar("O fornecedor possui produtos cadastrados!");
+                return;
+            }
+
+            await _fornecedorRepository.Remover(id);
+        }
+
+        public void Dispose()
+        {
+            _fornecedorRepository?.Dispose();
+            _enderecoRepositoy?.Dispose();
         }
     }
 }
