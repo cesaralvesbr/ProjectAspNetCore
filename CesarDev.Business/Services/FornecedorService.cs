@@ -1,17 +1,20 @@
 ﻿using CesarDev.Business.Interfaces.Repository;
+using CesarDev.Business.Interfaces.Services;
 using CesarDev.Business.Models;
 using CesarDev.Business.Models.Validations;
 
 namespace CesarDev.Business.Services
 {
-    public abstract class FornecedorService : BaseService, IFornecedorService
+    public class FornecedorService : BaseService, IFornecedorService
     {
-        private readonly IFornecedorRepository _fornecedorRepository;        
+        private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IEnderecoRepositoy _enderecoRepositoy;
 
-        protected FornecedorService(IFornecedorRepository fornecedorRepository,  IEnderecoRepositoy enderecoRepositoy)
+        protected FornecedorService(IFornecedorRepository fornecedorRepository,
+            IEnderecoRepositoy enderecoRepositoy,
+            INotificador notificador) : base(notificador)
         {
-            _fornecedorRepository = fornecedorRepository;            
+            _fornecedorRepository = fornecedorRepository;
             _enderecoRepositoy = enderecoRepositoy;
         }
 

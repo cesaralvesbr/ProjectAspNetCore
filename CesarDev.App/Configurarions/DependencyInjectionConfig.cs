@@ -23,7 +23,6 @@ namespace CesarDev.App.Configurarions
             services.AddScoped<IFornecedorService, FornecedorService>();
             services.AddScoped<IProdutoService, ProdutoService>();
 
-
             return services;
         }
     }

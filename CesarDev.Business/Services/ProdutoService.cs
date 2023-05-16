@@ -8,7 +8,7 @@ namespace CesarDev.Business.Services
     {
         private readonly IProdutoRepository _produtoRepository;
 
-        protected ProdutoService(IProdutoRepository produtoRepository)
+        protected ProdutoService(IProdutoRepository produtoRepository, INotificador notificador) : base(notificador)
         {
             _produtoRepository = produtoRepository;
         }
