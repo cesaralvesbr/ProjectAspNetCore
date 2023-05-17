@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CesarDev.Business.Interfaces.Repository
+namespace CesarDev.Business.Interfaces
 {
     public interface IEnderecoRepositoy : IRepository<Endereco>
     {

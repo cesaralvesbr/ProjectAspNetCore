@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CesarDev.Business.Interfaces.Services
+namespace CesarDev.Business.Interfaces
 {
     public interface IProdutoService : IDisposable
     {

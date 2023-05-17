@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CesarDev.App.ViewModels;
-using CesarDev.Business.Interfaces.Repository;
+using CesarDev.Business.Interfaces;
 using CesarDev.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +10,15 @@ namespace CesarDev.App.Controllers
     public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
-        private readonly IEnderecoRepositoy _enderecoRepository;
+        private readonly IFornecedorService _fornecedorService;
         private readonly IMapper _mapper;
 
-        public FornecedoresController(IFornecedorRepository fornecedorRepository, IEnderecoRepositoy enderecoRepository, IMapper mapper)
+        public FornecedoresController(IFornecedorRepository fornecedorRepository,
+            IFornecedorService fornecedorService,
+            IMapper mapper, INotificador notificador) : base(notificador)
         {
             _fornecedorRepository = fornecedorRepository;
-            _enderecoRepository = enderecoRepository;
+            _fornecedorService = fornecedorService;
             _mapper = mapper;
         }
 
@@ -54,7 +56,7 @@ namespace CesarDev.App.Controllers
             if (!ModelState.IsValid)
                 return View(fornecedorViewModel);
             Fornecedor fornecedor = _mapper.Map<Fornecedor>(fornecedorViewModel);
-            await _fornecedorRepository.Adicionar(fornecedor);
+            await _fornecedorService.Adicionar(fornecedor);
 
             return RedirectToAction("Index");
         }
@@ -82,7 +84,7 @@ namespace CesarDev.App.Controllers
                 return View(fornecedorViewModel);
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorViewModel);
-            await _fornecedorRepository.Atualizar(fornecedor);
+            await _fornecedorService.Atualizar(fornecedor);
 
             return RedirectToAction("Index");
 
@@ -104,10 +106,10 @@ namespace CesarDev.App.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var fornecedorViewModel = await ObterFornecedorEndereco(id);
-            if (fornecedorViewModel == null) return NotFound();            
+            if (fornecedorViewModel == null) return NotFound();
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorViewModel);
-            await _fornecedorRepository.Remover(fornecedor.Id);
+            await _fornecedorService.Remover(fornecedor.Id);
 
             return RedirectToAction("Index");
         }
@@ -151,7 +153,7 @@ namespace CesarDev.App.Controllers
 
             if (!ModelState.IsValid) return PartialView("_AtualizarEndereco", fornecedorViewModel);
 
-            await _enderecoRepository.Atualizar(_mapper.Map<Endereco>(fornecedorViewModel.Endereco));         
+            await _fornecedorService.AtualizarEndereco(_mapper.Map<Endereco>(fornecedorViewModel.Endereco));
 
             var url = Url.Action("ObterEndereco", "Fornecedores", new { id = fornecedorViewModel.Endereco.FornecedorId });
             return Json(new { success = true, url });

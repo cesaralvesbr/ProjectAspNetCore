@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CesarDev.App.ViewModels;
-using CesarDev.Business.Interfaces.Repository;
-using CesarDev.Business.Interfaces.Services;
+using CesarDev.Business.Interfaces;
 using CesarDev.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +11,16 @@ namespace CesarDev.App.Controllers
     {
         private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IProdutoRepository _produtoRepository;
+        private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
 
-        public ProdutosController(
+        public ProdutosController(IFornecedorRepository fornecedorRepository,
             IProdutoRepository produtoRepository,
-            IFornecedorRepository fornecedorRepository,
-            IMapper mapper)
+            IProdutoService produtoService, IMapper mapper, INotificador notificador) : base(notificador)
         {
-            _produtoRepository = produtoRepository;
             _fornecedorRepository = fornecedorRepository;
+            _produtoRepository = produtoRepository;
+            _produtoService = produtoService;
             _mapper = mapper;
         }
 
@@ -67,7 +67,9 @@ namespace CesarDev.App.Controllers
             produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
             Produto produto = _mapper.Map<Produto>(produtoViewModel);
 
-            await _produtoRepository.Adicionar(produto);
+            await _produtoService.Adicionar(produto);
+
+            if(!OperacaoValida()) return View(produto);
 
             return RedirectToAction("Index");
         }
@@ -98,7 +100,7 @@ namespace CesarDev.App.Controllers
             if (!ModelState.IsValid)
                 return View(produtoViewModel);
 
-            if(produtoViewModel.ImagemUpload != null)
+            if (produtoViewModel.ImagemUpload != null)
             {
                 var imgPrefixo = Guid.NewGuid() + "_";
                 if (!await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo))
@@ -113,7 +115,9 @@ namespace CesarDev.App.Controllers
             produtoAtualizacao.Ativo = produtoViewModel.Ativo;
 
             Produto produto = _mapper.Map<Produto>(produtoAtualizacao);
-            await _produtoRepository.Atualizar(produto);
+            await _produtoService.Atualizar(produto);
+
+            if (!OperacaoValida()) return View(produto);
 
             return RedirectToAction(nameof(Index));
         }
@@ -138,7 +142,9 @@ namespace CesarDev.App.Controllers
             ProdutoViewModel produtoViewModel = await ObterProduto(id);
 
             if (produtoViewModel == null) return NotFound();
-            await _produtoRepository.Remover(id);
+            await _produtoService.Remover(id);
+
+            if (!OperacaoValida()) return View(produtoViewModel);
 
             return RedirectToAction("Index");
         }

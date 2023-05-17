@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CesarDev.Business.Interfaces.Repository
+namespace CesarDev.Business.Interfaces
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : Entidade
     {

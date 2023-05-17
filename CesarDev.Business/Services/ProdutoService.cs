@@ -1,21 +1,21 @@
-﻿using CesarDev.Business.Interfaces.Services;
+﻿using CesarDev.Business.Interfaces;
 using CesarDev.Business.Models;
 using CesarDev.Business.Models.Validations;
 
 namespace CesarDev.Business.Services
 {
-    public abstract class ProdutoService : BaseService, IProdutoService
+    public class ProdutoService : BaseService, IProdutoService
     {
         private readonly IProdutoRepository _produtoRepository;
 
-        protected ProdutoService(IProdutoRepository produtoRepository, INotificador notificador) : base(notificador)
+        public ProdutoService(IProdutoRepository produtoRepository, INotificador notificador) : base(notificador)
         {
             _produtoRepository = produtoRepository;
         }
 
         public async Task Adicionar(Produto produto)
         {
-            if (!ExecutarValidacao(new ProdutoValidation(), produto)) ;
+            if (!ExecutarValidacao(new ProdutoValidation(), produto)) return;
 
             await _produtoRepository.Adicionar(produto);
 
@@ -23,7 +23,7 @@ namespace CesarDev.Business.Services
 
         public async Task Atualizar(Produto produto)
         {
-            if (!ExecutarValidacao(new ProdutoValidation(), produto)) ;
+            if (!ExecutarValidacao(new ProdutoValidation(), produto)) return;
 
             await _produtoRepository.Atualizar(produto);
 

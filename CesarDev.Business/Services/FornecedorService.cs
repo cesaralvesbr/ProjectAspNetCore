@@ -1,5 +1,4 @@
-﻿using CesarDev.Business.Interfaces.Repository;
-using CesarDev.Business.Interfaces.Services;
+﻿using CesarDev.Business.Interfaces;
 using CesarDev.Business.Models;
 using CesarDev.Business.Models.Validations;
 
@@ -10,7 +9,7 @@ namespace CesarDev.Business.Services
         private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IEnderecoRepositoy _enderecoRepositoy;
 
-        protected FornecedorService(IFornecedorRepository fornecedorRepository,
+        public FornecedorService(IFornecedorRepository fornecedorRepository,
             IEnderecoRepositoy enderecoRepositoy,
             INotificador notificador) : base(notificador)
         {
@@ -34,7 +33,7 @@ namespace CesarDev.Business.Services
 
         public async Task Atualizar(Fornecedor fornecedor)
         {
-            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) ;
+            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) return;
 
             if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento && f.Id != fornecedor.Id).Result.Any())
             {
@@ -47,7 +46,7 @@ namespace CesarDev.Business.Services
 
         public async Task AtualizarEndereco(Endereco endereco)
         {
-            if (!ExecutarValidacao(new EnderecoValidation(), endereco)) ;
+            if (!ExecutarValidacao(new EnderecoValidation(), endereco)) return;
 
             await _enderecoRepositoy.Atualizar(endereco);
         }
