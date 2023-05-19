@@ -19,7 +19,7 @@ namespace CesarDev.Business.Services
 
         public async Task Adicionar(Fornecedor fornecedor)
         {
-            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor) &&
+            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor) ||
                 !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return;
 
             if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento).Result.Any())
@@ -57,6 +57,12 @@ namespace CesarDev.Business.Services
             {
                 Notificar("O fornecedor possui produtos cadastrados!");
                 return;
+            }
+
+            var endereco = await _enderecoRepositoy.ObterEnderecoPorFornecedor(id);
+            if (endereco != null)
+            {
+                await _enderecoRepositoy.Remover(endereco.Id);
             }
 
             await _fornecedorRepository.Remover(id);

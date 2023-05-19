@@ -19,7 +19,7 @@ namespace CesarDev.Business.Models.Validations
 
             When(f => f.TipoFornecedor == TipoFornecedor.PessoaFisica, () =>
             {
-                RuleFor(f => f.Documento.Length).Equal(CpfValidacao.TamanhoCpf).WithMessage("O campo Documento precisa ter {ComparionValue}" +
+                RuleFor(f => f.Documento.Length).Equal(CpfValidacao.TamanhoCpf).WithMessage("O campo Documento precisa ter {ComparionValue} " +
                     "caracteres e for fornecido {PropertyValue} .");
 
                 RuleFor(f => CpfValidacao.Validar(f.Documento)).Equal(true).WithMessage("O documento fornecido é inválido.");
@@ -27,7 +27,7 @@ namespace CesarDev.Business.Models.Validations
 
             When(f => f.TipoFornecedor == TipoFornecedor.PessoaJuridca, () =>
             {
-                RuleFor(f => f.Documento.Length).Equal(CnpjValidacao.TamanhoCnpj).WithMessage("O campo Documento precisa ter {ComparionValue}" +
+                RuleFor(f => f.Documento.Length).Equal(CnpjValidacao.TamanhoCnpj).WithMessage("O campo Documento precisa ter {ComparionValue} " +
                    "caracteres e for fornecido {PropertyValue} .");
 
                 RuleFor(f => CnpjValidacao.Validar(f.Documento)).Equal(true).WithMessage("O documento fornecido é inválido.");
