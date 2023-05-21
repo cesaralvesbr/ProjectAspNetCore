@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CesarDev.App.Controllers
 {
+    [Authorize]
     public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
