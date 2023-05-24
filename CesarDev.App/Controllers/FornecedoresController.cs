@@ -3,11 +3,12 @@ using CesarDev.App.ViewModels;
 using CesarDev.Business.Interfaces;
 using CesarDev.Business.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CesarDev.App.Controllers
 {
-   
+
     public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
